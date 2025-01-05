@@ -38,6 +38,7 @@ gamma = 1/2;
 chi = 2;
 tol_simplex = 1e-07;  
 tol_varf = 1e-07; 
+vec_time = zeros(1,11); % contains computational costs
 
 % Nelder Mead method with suggested initial points
 [simplex_initial, flag] = NelderMead_simplex(dim, x_initial);
@@ -59,7 +60,6 @@ for i=1:dim
     coord_random = l_bound(i)*ones(1,10) + (u_bound(i) - l_bound(i)) * rand(1, 10);
     M_ten_initial_points(i,:) = coord_random;
 end
-vec_time = zeros(1,11);
 lista_rates1 = {};
 lista_rates2 = {};
 

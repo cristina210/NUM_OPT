@@ -37,7 +37,7 @@ end
 x_bar = mean(simplex(1:n, :));
 xbar_vec = x_bar;
 distance_bar = max(vecnorm(simplex - x_bar, Inf, 2));
-delta_f = 1; % entra sempre nel ciclo
+delta_f = 1;
 k = 0;
 while k < kmax && distance_bar > tol1 && delta_f > tol2
     if k ~= 1
@@ -46,7 +46,7 @@ while k < kmax && distance_bar > tol1 && delta_f > tol2
     f_val = sortrows(f_val); 
     simplex = f_val(:,2:end); 
     x_bar = mean(simplex(1:n, :));
-    % calcolo la riflessione 
+    % reflection
     x_r = x_bar + rho*(x_bar - simplex(n+1,:));
     f1 = f_val(1,1);
     fr = f(x_r); 
@@ -58,7 +58,7 @@ while k < kmax && distance_bar > tol1 && delta_f > tol2
         [k, distance_bar, delta_f] = upDate_quantities(k, simplex, x_bar, f1, fend);
         continue
     elseif fr < f1 
-        % espansione
+        % expansion
         x_e = x_bar + chi*(x_r - x_bar);
         fe = f(x_e);
         if fe < fr
@@ -73,7 +73,7 @@ while k < kmax && distance_bar > tol1 && delta_f > tol2
             continue
         end
     elseif (fr > fn || abs(fn-fr) <= tol3)
-        % contrazione
+        % contraction
         if fend < fr
             x_c = x_bar - gamma*(x_bar - simplex(end,:));
         else
@@ -86,7 +86,7 @@ while k < kmax && distance_bar > tol1 && delta_f > tol2
             [k, distance_bar, delta_f] = upDate_quantities(k, simplex, x_bar, f1, fend);
             continue
         else
-            % shrink phase
+            % shrinking
             for i=2:n+1
                 simplex(i,:) = simplex(1,:) + sigma*(simplex(i,:) - simplex(1,:));
                 f_val(i,:) = [f(simplex(i,:)), simplex(i,:)];
@@ -97,19 +97,19 @@ while k < kmax && distance_bar > tol1 && delta_f > tol2
     end
 end
 if k == 1
-   warning('Il simplesso iniziale dato in input non è adeguata per esplorare lo spazio circostante: la funzione si ferma alla prima iterazione')
+   warning('The initial simplex provided as input is not adequate to explore the surrounding space: the function stops at the first iteration')
 end
 if k == kmax
-   %warning('Raggiunto il limite massimo di iterazioni')
+   warning('Maximum iteration limit reached')
    flag = 1;  % no convergence
 end
 if distance_bar <= tol1 
-   %disp('Simplesso sta convergendo a un punto')
-   flag = 2; % convergence type 1
+   %disp('The simplex is converging to a point')
+   flag = 2; % convergence of type 1
 end
 if delta_f <= tol2 
-   %disp('Il simplesso ha raggiunto una regione stazionaria per f')
-   flag = 3; % convergence type 2
+   %disp('The simplex has reached a stationary region for f')
+   flag = 3; % convergence of type 2
 end
 
 end

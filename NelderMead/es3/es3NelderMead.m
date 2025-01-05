@@ -48,7 +48,7 @@ disp("Empirical rate of convergence")
 %     disp(lista_rates1{i});  % Mostra il contenuto della cella i
 % end
 % vedi inizio di pag 26 di della santa
-%% Rosenbrook Chained per dim = 25 %%
+%% Chained Rosenbrook per dim = 25 %%
 clc
 clear all
 close all
@@ -77,7 +77,7 @@ for i = 1:length(lista_rates2)
     disp(['Column ', num2str(i), ':']);
     disp(lista_rates2{i});  % Mostra il contenuto della cella i
 end
-%% Rosenbrook Chained per dim = 50 %%
+%% Chained Rosenbrook per dim = 50 %%
 clc
 clear all
 close all
