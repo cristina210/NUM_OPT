@@ -1,5 +1,20 @@
+% Function: NelderMead_simplex
+% Constructs an initial simplex for the Nelder-Mead method 
+% in a specified dimension. Verifies that the simplex is non-degenerate 
+% by checking the linear independence of its vertices.
+%
+% Inputs:
+% - dim: dimension
+% - initial_point: coordinates of a point for the simplex.
+%
+% Outputs:
+% - simplex_initial: Matrix containing the vertices of the initial simplex.
+% - flag: Status flag indicating whether the simplex is valid.
+
 function [simplex_initial, flag] = NelderMead_simplex(dim, initial_point)
 flag = 0;
+
+% Create initial simplex
 simplex_initial = zeros(dim+1, dim); 
 for i = 1:(dim+1)
     for j = 1:(dim)
@@ -10,8 +25,8 @@ for i = 1:(dim+1)
         end
     end
 end
-% Controllo che sia un simplesso non degenere (differenza tra un un punto e il primo
-% punto sono lin. ind.)
+
+% Check if it's degenerate
 vettore_differenze = zeros(dim,dim);
 for i = 2:dim+1
     vettore_differenze(i-1,:) = simplex_initial(1,:) - simplex_initial(i,:);

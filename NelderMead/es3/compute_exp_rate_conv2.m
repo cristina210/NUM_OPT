@@ -10,6 +10,7 @@
 %
 % Output:
 % - vec_rate: Vector of convergence rates.
+
 function [vec_rate] = compute_exp_rate_conv2(x_bar, n_iter, x_opt)
 vec_rate = zeros(1,n_iter);
 for i=1:(length(x_bar)-1)
@@ -20,9 +21,9 @@ for i=1:(length(x_bar)-1)
         vec_rate(i) = ratio;
     end
 end
+figure;
 vec_rate = vec_rate(1:(length(x_bar)-1));
-plot(1:length(vec_rate), vec_rate)
-xlabel('k', 'FontSize', 14)
-ylabel('∥e_(k+1)∥ / ∥e_k∥', 'FontSize', 14)
-% Titolo con caratteri più grandi
-title('Ordine di Convergenza', 'FontSize', 16)
+plot(1:length(vec_rate), vec_rate, 'LineWidth', 2)
+title('Convergence rate','FontSize', 16)
+xlabel('iteration', 'FontSize', 14)
+ylabel('Error ratios', 'FontSize', 14)

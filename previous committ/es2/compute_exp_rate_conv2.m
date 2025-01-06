@@ -21,9 +21,8 @@ for i=1:(length(x_bar)-1)
         vec_rate(i) = ratio;
     end
 end
-figure;
 vec_rate = vec_rate(1:(length(x_bar)-1));
-plot(1:length(vec_rate), vec_rate, 'LineWidth', 2)
-title('Convergence rate','FontSize', 16)
-xlabel('iteration', 'FontSize', 14)
-ylabel('Error ratios', 'FontSize', 14)
+plot(1:length(vec_rate), vec_rate)
+title('Convergence rate')
+xlabel('iteration')
+ylabel('Error ratios')

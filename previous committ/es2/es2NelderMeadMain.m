@@ -30,28 +30,20 @@ tic;
 [k1, simplex1,x_bar1, flag1]  = nelder_mead(f, simplex_initial1, kmax, rho, chi, gamma, dim, sigma, tol_simplex, tol_varf);
 size(x_bar1)
 time1 = toc;
+k1;
+flag1;
+x_bar1(end,:);
 tic;
 [k2, simplex2,x_bar2, flag2]  = nelder_mead(f, simplex_initial2, kmax, rho, chi, gamma, dim, sigma, tol_simplex, tol_varf);
 time2 = toc;
+k2;
+flag2;
 x_bar2(end,:);
-
-% Output
-disp("Convergence point from first initial point:")
-disp(x_bar1(end,:))
-disp("Convergence point from second initial point:")
-disp(x_bar2(end,:))
-disp("Number iteration before convergence from first initial point:")
-disp(k1)
-disp("Number iteration before convergence from second initial point:")
-disp(k2)
-vec_rate1 = compute_exp_rate_conv2(x_bar1, k1, x_opt);   % order of convergence
-vec_rate2 = compute_exp_rate_conv2(x_bar2, k2, x_opt);    % order of convergence
 
 % Picture
 f = @(x, y) 100*(y - x.^2).^2 + (1 - x).^2;
 x_interval = linspace(-2, 2, 500);  
 y_interval = linspace(-1, 3, 500); 
 nelderMead_picture2D(f, x_interval, y_interval, x_bar1, x_bar2, initial_point1, initial_point2)
-
-% COSA MANCA: tempi di convergenza studiarli in un altro file (prendere i
-% tempi medi!!!)
+figure;
+vec_rate2 = compute_exp_rate_conv2(x_bar2, k2, x_opt);

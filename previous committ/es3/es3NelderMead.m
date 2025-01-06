@@ -10,41 +10,13 @@
 % computational cost, and empirical rates of convergence of the method in
 % various dimensions (10,25,50) and multiple initial points (one suggested from 
 % PDF and 10 points from the ipercube).
-% It exploits NelderMead_for10Points() function
+% It exploit NelderMead_for10Points() function
 
 %% Chained Rosenbrook per dim = 10 %%
 clc
 clear all
 close all
 rng(min(343341,343428))  % ho diviso in sezioni quindi mettere a posto la questione seed 
-dim = 4;
-disp("dimensione:")
-disp(dim)
-
-f1_ros = @(x) sum(arrayfun(@(i) 100*(x(i)^2 - x(i+1))^2 + (x(i) - 1)^2, 1:length(x)-1));
-
-x1_rosenbrock = arrayfun(@(i) -1.2*(mod(i,2)==1) + 1.0*(mod(i,2)==0), 1:dim);
-
-x1_opt = ones(1,dim);
-
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
-
-disp("Convergence point from initial point suggested from pdf file:")
-disp(x_bar1)
-disp("Number iteration before convergence from initial point suggested from pdf file:")
-disp(k1)
-disp("Number iteration before convergence from initial point suggested from pdf file:")
-disp(k_10_points)
-disp("Convergence points from 10 initial points from the ipercube and flag:")
-disp(x_bar_10_points)
-disp("Computational cost for each of the 1 + 10 points")
-disp(vec_time)  % possiamo accontetarci anche senza media che altrimenti ci fonde il PC (:
-% vedi inizio di pag 26 di della santa per teoria su rate of conv
-
-%% Chained Rosenbrook per dim = 25 %%
-clc
-clear all
-close all
 dim = 3;
 disp("dimensione:")
 disp(dim)
@@ -54,7 +26,7 @@ x1_rosenbrock = arrayfun(@(i) -1.2*(mod(i,2)==1) + 1.0*(mod(i,2)==0), 1:dim);
 
 x1_opt = ones(1,dim);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
 
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
@@ -65,8 +37,46 @@ disp(k_10_points)
 disp("Convergence points from 10 initial points from the ipercube and flag:")
 disp(x_bar_10_points)
 disp("Computational cost for each of the 1 + 10 points")
-disp(vec_time)
+disp(vec_time)  %fare comunque una media perchè vengono diversi a ogni iterazione nonostante il seed
+disp("Empirical rate of convergence")
+% for i = 1:length(lista_rates2)
+%     disp(['Column ', num2str(i), ':']);
+%     disp(lista_rates2{i});  % Mostra il contenuto della cella i
+% end
+% for i = 1:length(lista_rates1)
+%     disp(['Column ', num2str(i), ':']);
+%     disp(lista_rates1{i});  % Mostra il contenuto della cella i
+% end
+% vedi inizio di pag 26 di della santa
+%% Chained Rosenbrook per dim = 25 %%
+clc
+clear all
+close all
+dim = 25;
+disp("dimensione:")
+disp(dim)
+f1_ros = @(x) sum(arrayfun(@(i) 100*(x(i)^2 - x(i+1))^2 + (x(i) - 1)^2, 1:length(x)-1));
 
+x1_rosenbrock = arrayfun(@(i) -1.2*(mod(i,2)==1) + 1.0*(mod(i,2)==0), 1:dim);
+
+x1_opt = ones(1,dim);
+
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
+% i parametri per il nelder mead li ho messi dentro la funzione
+disp("Convergence point from initial point suggested from pdf file:")
+disp(x_bar1)
+disp("Number iteration before convergence from initial point suggested from pdf file:")
+disp(k1)
+disp("Number iteration before convergence from initial point suggested from pdf file:")
+disp(k_10_points)
+disp("Convergence points from 10 initial points from the ipercube and flag:")
+disp(x_bar_10_points)
+disp("Computational cost for each of the 1 + 10 points")
+disp(vec_time)
+for i = 1:length(lista_rates2)
+    disp(['Column ', num2str(i), ':']);
+    disp(lista_rates2{i});  % Mostra il contenuto della cella i
+end
 %% Chained Rosenbrook per dim = 50 %%
 clc
 clear all
@@ -74,15 +84,14 @@ close all
 dim = 50;
 disp("dimensione:")
 disp(dim)
-
 f1_ros = @(x) sum(arrayfun(@(i) 100*(x(i)^2 - x(i+1))^2 + (x(i) - 1)^2, 1:length(x)-1));
 
 x1_rosenbrock = arrayfun(@(i) -1.2*(mod(i,2)==1) + 1.0*(mod(i,2)==0), 1:dim);
 
 x1_opt = ones(1,dim);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
-
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f1_ros,x1_rosenbrock,x1_opt);
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -93,7 +102,10 @@ disp("Convergence points from 10 initial points from the ipercube and flag:")
 disp(x_bar_10_points)
 disp("Computational cost for each of the 1 + 10 points")
 disp(vec_time)
-
+for i = 1:length(lista_rates2)
+    disp(['Column ', num2str(i), ':']);
+    disp(lista_rates2{i});  % Mostra il contenuto della cella i
+end
 %% Wood function per dim = 10 %%
 clc
 clear all
@@ -113,13 +125,12 @@ x2_wood = zeros(1,dim);
 x2_wood(mod(n,2) == 1 & n <= 4) = -3;
 x2_wood(mod(n,2) == 1 & n > 4) = -2; 
 x2_wood(mod(n,2) == 0 & n <= 4) = -1;
-x2_wood(mod(n,2) == 0 & n > 4) = 0;  
-
+x2_wood(mod(n,2) == 0 & n > 4) = 0;   
 x2_opt = ones(1,dim);
 disp(x2_wood)
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
-
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -154,8 +165,9 @@ x2_wood(mod(n,2) == 0 & n > 4) = 0;
 x2_opt = ones(1,dim);
 disp(x2_wood)
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
 
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -166,8 +178,10 @@ disp("Convergence points from 10 initial points from the ipercube and flag:")
 disp(x_bar_10_points)
 disp("Computational cost for each of the 1 + 10 points")
 disp(vec_time)
-
-
+for i = 1:length(lista_rates2)
+    disp(['Column ', num2str(i), ':']);
+    disp(lista_rates2{i});  % Mostra il contenuto della cella i
+end
 %% Wood function per dim = 50 %%
 clc
 clear all
@@ -191,8 +205,9 @@ x2_wood(mod(n,2) == 0 & n > 4) = 0;
 x2_opt = ones(1,dim);
 disp(x2_wood)
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points,lista_rates] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f2_wood,x2_wood,x2_opt);
 
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -225,8 +240,9 @@ x3_powell(mod(n,4) == 3) = 0;
 x3_powell(mod(n,4) == 0) = 1;  
 x3_opt = zeros(1,dim);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
 
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -259,8 +275,9 @@ x3_powell(mod(n,4) == 3) = 0;
 x3_powell(mod(n,4) == 0) = 1;  
 x3_opt = zeros(1,dim);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
 
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
@@ -276,7 +293,7 @@ disp(vec_time)
 clc
 clear all
 close all
-dim = 5;
+dim = 50;
 disp("dimensione:")
 disp(dim)
 
@@ -293,8 +310,9 @@ x3_powell(mod(n,4) == 3) = 0;
 x3_powell(mod(n,4) == 0) = 1;  
 x3_opt = zeros(1,dim);
 
-[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
+[vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates1, lista_rates2] = NelderMead_for_10Points(dim,f3_powell,x3_powell,x3_opt);
 
+% i parametri per il nelder mead li ho messi dentro la funzione
 disp("Convergence point from initial point suggested from pdf file:")
 disp(x_bar1)
 disp("Number iteration before convergence from initial point suggested from pdf file:")
