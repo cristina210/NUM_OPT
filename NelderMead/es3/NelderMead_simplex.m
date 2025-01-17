@@ -32,7 +32,7 @@ for i = 2:dim+1
     vettore_differenze(i-1,:) = simplex_initial(1,:) - simplex_initial(i,:);
 end
 if rank(vettore_differenze) ~= dim
-    disp("Il simplesso iniziale è degenere")
+    disp("Initial symplex is invalid")
     flag = 1;
 end
 end

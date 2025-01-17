@@ -1,4 +1,4 @@
-% Function: NelderMead_for_10Points
+% Function: NelderMead_for_10Points_2
 % Runs the Nelder-Mead method for a given function and  
 % for a fixed initial point and 10 random points within a hypercube build 
 % from the fixed initial point. 
@@ -22,24 +22,28 @@
 % - x_bar_10_points: A 10x(dim+1) matrix where each row contains:
 %     - The final solution (final barycenter of the simplex) for each random initial point.
 %     - A success/failure flag as the last element of the row.
-% - lista_rates1: Cell array containing convergence rate vectors for each random point 
-%                   using an alternative computation method (currently unused in the code).
-% - lista_rates2: Cell array containing convergence rate vectors for each random point 
-%                   based on the distance to the known optimal solution.
-% This function makes use of some functions such as compute_exp_rate_conv2()
-
-function [vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates] = NelderMead_for_10Points(dim,f,x_initial,x_opt)
+% - lista_rates: Cell array containing convergence rate vectors ( based on the distance 
+%                 to the known optimal solution) for each application of method to
+%                 11 initial points.
+% - lista_err: Cell array containing containing vectors of norms of the differences 
+%   between consecutive simplex's barycenters for each application of method to
+%                 11 initial points.
+%    
+% This function makes use of some functions such as
+% compute_exp_rate_conv2() and stagnation_func()
+function [vec_time, k1, x_bar1, k_10_points,x_bar_10_points, lista_rates, lista_err] = NelderMead_for_10Points_2(dim,f,x_initial,x_opt)
 
 % Parameters for Nelder Mead
-kmax = 100000;
-rho = 1;
-sigma = 1/2;
-gamma = 1/2;
-chi = 2;
+kmax = 10000;
+rho = 1.35;
+sigma = 0.5;
+gamma = 0.9;
+chi = 1.5;
 tol_simplex = 1e-07;  
-tol_varf = 1e-07; 
+tol_varf = 1e-07; %3e-01; 
 vec_time = zeros(1,11); % contains computational costs
-lista_rates = {};  % cointains rates of convergence
+lista_rates = {};  % contains rates of convergence
+lista_err = {};    % contains increments of x_bar
 
 % Nelder Mead method with suggested initial points
 [simplex_initial, flag] = NelderMead_simplex(dim, x_initial);
@@ -47,8 +51,12 @@ tic
 [k1, simplex,x_bar1, flag]  = nelder_mead(f, simplex_initial, kmax, rho, chi, gamma, dim, sigma, tol_simplex, tol_varf);
 vec_time(1,1) = toc;
 vec_rate = compute_exp_rate_conv2(x_bar1, k1, x_opt);
+vec_err = stagnation_func(x_bar1);
 lista_rates{1} = vec_rate;
+lista_err{1} = vec_err;
+
 x_bar1 = x_bar1(end,:);
+x_bar1 = [x_bar1, flag];
 
 % Nelder Mead method with 10 random initial points from ipercube
 % Generate points
@@ -77,7 +85,8 @@ for i = 1:10
     x_bar_10_points(i,:) = row_x_bar_10_points ;
     k_10_points(1,i) = k;
     vec_rate_i = compute_exp_rate_conv2(x_bar, k, x_opt);
+    vec_err_i = stagnation_func(x_bar);
     lista_rates{end+1} = vec_rate_i;
+    lista_err{end+1} = vec_err_i;
 end
 end
-

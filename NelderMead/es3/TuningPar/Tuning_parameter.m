@@ -1,6 +1,6 @@
 % Tuning of parameters rho, sigma, gamma, chi used in Nelder Mead method.
 % 3 different values of each parameters are compared in each dimensione =
-% 10,25,50. In each section a different function of ex 3 is take into
+% 10,25,50. In each section a different function of exercise 3 is take into
 % account together with the initial starting point suggested from the pdf
 % file.
 % The comparison between parameters is accomplished through the study of
@@ -8,7 +8,7 @@
 % (distance from optimal point)
 % The choice for the parameter is done take into consideration these
 % two quantities: best parameter shoud minimize both of them.
-% It is exploited function "comparePar()"
+% It is exploited function "comparePar2()"
 
 %% Tuning in Chained Rosenbrock
 clc
@@ -16,16 +16,14 @@ clear all
 close all
 
 % Value of parameters compared
-l = 3; 
-rho_vec = [0.25,1,1.75];
-sigma_vec = [0.2,0.5,0.8];
-gamma_vec = [0.2,0.5,0.8];
-chi_vec = [1,2,3];
+l = 5; 
+rho_vec = [0.25, 0.5, 1, 1.35, 1.75];
+sigma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+gamma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+chi_vec = [1.1, 1.5, 2, 2.5, 3];
 
 % Comparison in different dimension
-vec_dim = [5,6];
-% vec_dim = [10,25,50]
-
+vec_dim = [10,25,50];
 
 for j = 1:length(vec_dim)
     
@@ -52,10 +50,6 @@ for j = 1:length(vec_dim)
     disp(gamma_vec(pos_bestGamma))
     disp("value of chi")
     disp(chi_vec(pos_bestChi))
-    %Altra opzione se l'altra è troppo lenta)
-    %[best_par_for_conv,best_par_for_time] = comparePar(dim, f, initial_point,x_opt, l, rho,rho_vec,sigma,sigma_vec,gamma, gamma_vec,chi,chi_vec);
-    %disp(best_par_for_time)
-    %disp(best_par_for_conv)
 end  
 
 %% Tuning in Wood's function
@@ -64,22 +58,18 @@ clear all
 close all
 
 % Value of parameters compared
-l = 3; 
-rho = 1; 
-rho_vec = [0.25,1,1.75];
-sigma = 1/2;
-sigma_vec = [0.2,0.5,0.8];
-gamma = 1/2;
-gamma_vec = [0.2,0.5,0.8];
-chi = 2;
-chi_vec = [1,2,3];
+l = 5; 
+rho_vec = [0.25, 0.5, 1, 1.35, 1.75];
+sigma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+gamma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+chi_vec = [1.1, 1.5, 2, 2.5, 3];
 
 % Comparison in different dimension
-vec_dim = [5,6];
-% vec_dim = [10,25,50]
+vec_dim = [10,25,50];
 
 for j = 1:length(vec_dim)
     dim = vec_dim(j);
+    disp(dim)
     
     % Wood function
     % Information of function and initial point (suggested from PDF)
@@ -109,10 +99,6 @@ for j = 1:length(vec_dim)
     disp(gamma_vec(pos_bestGamma))
     disp("value of chi")
     disp(chi_vec(pos_bestChi))
-    %Altra opzione se l'altra è troppo lenta)
-    %[best_par_for_conv,best_par_for_time] = comparePar(dim, f, initial_point,x_opt, l, rho,rho_vec,sigma,sigma_vec,gamma, gamma_vec,chi,chi_vec);
-    %disp(best_par_for_time)
-    %disp(best_par_for_conv)
 end 
 
 
@@ -122,15 +108,14 @@ clear all
 close all
 
 % Value of parameters compared
-l = 3; 
-rho_vec = [0.25,1,1.75];
-sigma_vec = [0.2,0.5,0.8];
-gamma_vec = [0.2,0.5,0.8];
-chi_vec = [1,2,3];
+l = 5; 
+rho_vec = [0.25, 0.5, 1, 1.35, 1.75];
+sigma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+gamma_vec = [0.1, 0.25, 0.5, 0.75, 0.9];
+chi_vec = [1.1, 1.5, 2, 2.5, 3];
 
 % Comparison in different dimension
-vec_dim = [5,10];
-% vec_dim = [10,25,50]
+vec_dim = [10,25,50];
 
 
 for j = 1:length(vec_dim)
@@ -166,9 +151,5 @@ for j = 1:length(vec_dim)
     disp(gamma_vec(pos_bestGamma))
     disp("value of chi")
     disp(chi_vec(pos_bestChi))
-    %Altra opzione se l'altra è troppo lenta)
-    %[best_par_for_conv,best_par_for_time] = comparePar(dim, f, initial_point,x_opt, l, rho,rho_vec,sigma,sigma_vec,gamma, gamma_vec,chi,chi_vec);
-    %disp(best_par_for_time)
-    %disp(best_par_for_conv)
 end  
 

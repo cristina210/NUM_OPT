@@ -33,7 +33,7 @@ tol_simplex = 1e-07;
 tol_varf = 1e-07;  
 
 % for choosing the best configuration
-weight_k = 0.3;
+weight_k = 1*10^(-5);
 weight_opt = 1 - weight_k;
 
 

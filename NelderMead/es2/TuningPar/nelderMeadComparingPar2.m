@@ -21,24 +21,24 @@ clear all
 close all
 
 dim = 2;  
-% initial_point = [-1,1.2];  
+%initial_point = [-1.2,1];  
 initial_point = [1.2,1.2];
 x_opt = [1,1];
 f = @(x) 100*(x(2)-x(1)^2)^2+(1-x(1))^2 ; % Rosenbrock function
 
 % About parameters...
 num_par = 4;
-l = 5;  % number of possible value of each parameter to be tested
+l = 9;  % number of possible value of each parameter to be tested
 kmax = 10000;
-rho_vec = [0.2,0.5,1,1.5,1.7];
-sigma_vec = [0.1,0.3,0.5,0.7,0.9];
-gamma_vec = [0.1,0.3,0.5,0.7,0.9];
-chi_vec = [1, 1.5, 2, 2.5, 3];
+rho_vec = [0.1, 0.3, 0.5, 0.7, 1, 1.3, 1.5, 1.7, 1.9];  % reflection
+sigma_vec = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];  % shrinking
+gamma_vec = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];   % contraction
+chi_vec = [1.1, 1.3, 1.5, 1.7, 2, 2.1, 2.3, 2.5, 2.7];   % expansion
 tol_simplex = 1e-07; 
 tol_varf = 1e-07;  
 
 % for choosing the best configuration
-weight_k = 0.3;
+weight_k = 1*10^(-5);
 weight_opt = 1 - weight_k;
 
 % initial simplex
@@ -76,3 +76,20 @@ disp("gamma")
 disp(gamma_vec(pos3))
 disp("chi")
 disp(chi_vec(pos4))
+
+
+% Analysis of sensibility to parameters
+
+% extreme values
+max_k = max(configuration_k(:));
+min_k = min(configuration_k(:));
+max_err_conv = max(configuration_err_conv(:));
+min_err_conv = min(configuration_err_conv(:));
+
+% Number of iteration distribution varying parameter
+figure;
+histogram(configuration_k(:), 50);
+title('Number of iteration distribution');
+xlabel('Number of iterations');
+ylabel('Frequency');
+grid on;

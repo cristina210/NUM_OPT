@@ -22,8 +22,7 @@
 
 function [k, simplex, xbar_vec, flag] = nelder_mead(f, simplex, kmax, rho, chi, gamma, n, sigma, tol1, tol2)
 flag = 0;
-tol3 = 10^(-8);
-f_val = zeros(n+1, n+1); 
+tol3 = 10^(-8); 
 
 % Function handle for updating certain quantities
 upDate_quantities = @(k, simplex, x_bar, f1, fend) deal( ...
@@ -31,19 +30,44 @@ upDate_quantities = @(k, simplex, x_bar, f1, fend) deal( ...
     max(vecnorm(simplex - x_bar, Inf, 2)), ...
     abs(fend - f1));
 
+% initialization
+
+f_val = zeros(n+1, n+1);
 for i=1:n+1
     f_val(i,:) = [f(simplex(i,:)), simplex(i,:)];
 end
+% f_val is a matrix of size (n+1, n+1) that contains the function values 
+% and the coordinates of the points in the simplex during the execution 
+% of the Nelder-Mead algorithm. The first column of f_val contains the function 
+% values f computed at the points of the simplex. 
+% Each row represents a point in the simplex, 
+% so f_val(i,1) is the function value evaluated at the i-th point.
+
 x_bar = mean(simplex(1:n, :));
 xbar_vec = x_bar;
+% x_bar_vec is a vector that stores the barycenter of the simplex
+
 distance_bar = max(vecnorm(simplex - x_bar, Inf, 2));
+% distance_bar represents the maximum distance between the barycenter (x_bar) 
+% and the points of the simplex.
+% distance_bar is used as a convergence criterion: when it becomes smaller than 
+% a predefined tolerance (tol1) the method stops.
+
 delta_f = 1;
+% delta_f represents the absolute difference between the function values 
+% at the first and last points of the simplex.
+% delta_f is used as a convergence criterion: when it becomes smaller than 
+% a predefined tolerance (tol2) the method stops.
+
 k = 0;
+
 while k < kmax && distance_bar > tol1 && delta_f > tol2
     if k ~= 1
         xbar_vec = [xbar_vec; x_bar];
     end
-    f_val = sortrows(f_val); 
+    f_val = sortrows(f_val);
+    % f_val is sorted based on the function values to ensure 
+    % that the best point is always at the top of the simplex.
     simplex = f_val(:,2:end); 
     x_bar = mean(simplex(1:n, :));
     % reflection
